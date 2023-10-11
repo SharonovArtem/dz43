@@ -19,6 +19,12 @@ namespace ConsoleApp9
         private string _startPoint;
         private string _finishPoint;
 
+        public Direction(string startPoint, string finishPoint)
+        {
+            _startPoint = startPoint;
+            _finishPoint = finishPoint;
+        }
+
         public void AddDirection()
         {
             Console.WriteLine("Откуда поедет поезд?");
@@ -36,25 +42,45 @@ namespace ConsoleApp9
 
     class Passenger
     {
-        public Passenger(string name, int money)
+        public Passenger(string name)
         {
             _name = name;
-            _money = money;
+        }
+
+        private List<string> _names = new List<string> { "Август", "Августин", "Авраам", "Аврора", "Агата", "Агафон", "Агнесса", "Агния", "Ада", "Аделаида", "Аделина", "Адонис", "Акайо", "Акулина", "Алан", "Алевтина", "Александр", "Александра", "Алексей", "Алена", "Алина", "Алиса", "Алла", "Алсу", "Альберт", "Альбина", "Альфия", "Альфред", "Амалия", "Амелия", "Анастасий", "Анастасия", "Анатолий", "Ангелина", "Андрей", "Анжела", "Анжелика", "Анисий", "Анна", "Антон", "Антонина", "Анфиса", "Аполлинарий", "Аполлон", "Ариадна", "Арина", "Аристарх", "Аркадий", "Арсен", "Арсений", "Артем", "Артемий", "Артур", "Архип", "Ася" };
+
+        public Passenger CreatePassenger(out Passenger passenger)
+        {
+            Random random = new Random();
+            passenger = new Passenger(_names[random.Next(0, 59)]);
+
+            return passenger;
         }
 
         private string _name;
-        public int _money;
     }
 
     class Station
     {
         private List<Passenger> _passengers = new List<Passenger>();
+        private int _passengersNumber;
 
         public void AddPassengers()
         {
             Random random = new Random();
+            Passenger passenger = null;
 
-            for (int i = 0; i <)
+            _passengersNumber = random.Next(50, 400);
+
+            for (int i = 0; i < _passengersNumber; i++)
+            {
+                _passengers.Add(passenger.CreatePassenger(out passenger));
+            }
+        }
+
+        public void PlacePassengers()
+        {
+
         }
     }
 }

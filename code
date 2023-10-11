@@ -34,62 +34,30 @@ namespace ConsoleApp9
 
     class Van
     {
-        private List<Passenger> _seats = new List<Passenger>(60);
+        private int _maxAccomodation;
 
-        public void AddPassenger(List<Passenger> passengers)
+        public Van(int maxAccomodation)
         {
-            _seats.Add(passengers[passengers.Count - 1]);
+            _maxAccomodation = maxAccomodation;
         }
-    }
-
-    class Passenger
-    {
-        public Passenger(string name)
-        {
-            _name = name;
-        }
-
-        private List<string> _names = new List<string> { "Август", "Августин", "Авраам", "Аврора", "Агата", "Агафон", "Агнесса", "Агния", "Ада", "Аделаида", "Аделина", "Адонис", "Акайо", "Акулина", "Алан", "Алевтина", "Александр", "Александра", "Алексей", "Алена", "Алина", "Алиса", "Алла", "Алсу", "Альберт", "Альбина", "Альфия", "Альфред", "Амалия", "Амелия", "Анастасий", "Анастасия", "Анатолий", "Ангелина", "Андрей", "Анжела", "Анжелика", "Анисий", "Анна", "Антон", "Антонина", "Анфиса", "Аполлинарий", "Аполлон", "Ариадна", "Арина", "Аристарх", "Аркадий", "Арсен", "Арсений", "Артем", "Артемий", "Артур", "Архип", "Ася" };
-
-        public Passenger CreatePassenger(out Passenger passenger)
-        {
-            Random random = new Random();
-            passenger = new Passenger(_names[random.Next(0, 59)]);
-
-            return passenger;
-        }
-
-        private string _name;
     }
 
     class Station
     {
-        private List<Passenger> _passengers = new List<Passenger>();
+        List<Van> vans = new List<Van>();
+
         private int _passengersNumber;
 
         public void AddPassengers()
         {
+            int numberOfSeatsInVans = 0;
             Random random = new Random();
-            Passenger passenger = null;
 
             _passengersNumber = random.Next(50, 400);
 
-            for (int i = 0; i < _passengersNumber; i++)
+            while (numberOfSeatsInVans < _passengersNumber)
             {
-                _passengers.Add(passenger.CreatePassenger(out passenger));
-            }
-        }
 
-        public void PlacePassengers()
-        {            
-            for (int i = 0; i < _passengers.Count; i++)
-            {
-                if (_passengers[i] != null)
-                {
-                    Van van = new Van();
-                    van.AddPassenger(_passengers);
-                    _passengers.RemoveAt(_passengers.Count - 1);
-                }
             }
         }
     }

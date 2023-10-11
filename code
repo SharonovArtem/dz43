@@ -1,0 +1,60 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApp9
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+
+        }
+    }
+
+    class Direction
+    {
+        private string _startPoint;
+        private string _finishPoint;
+
+        public void AddDirection()
+        {
+            Console.WriteLine("Откуда поедет поезд?");
+            _startPoint = Console.ReadLine();
+
+            Console.WriteLine("Какая конечная точка?");
+            _finishPoint = Console.ReadLine();
+        }
+    }
+
+    class Van
+    {
+        private List<Passenger> _seats = new List<Passenger>(60);
+    }
+
+    class Passenger
+    {
+        public Passenger(string name, int money)
+        {
+            _name = name;
+            _money = money;
+        }
+
+        private string _name;
+        public int _money;
+    }
+
+    class Station
+    {
+        private List<Passenger> _passengers = new List<Passenger>();
+
+        public void AddPassengers()
+        {
+            Random random = new Random();
+
+            for (int i = 0; i <)
+        }
+    }
+}

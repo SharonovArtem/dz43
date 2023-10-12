@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace ConsoleApp9
 {
@@ -8,23 +9,27 @@ namespace ConsoleApp9
         {
             Station station = new Station();
             bool isWorking = true;
-            
+
             while (isWorking)
             {
-                Console.WriteLine("Нажмите на пробел чтобы создать поезд");
+                Console.WriteLine("Нажмите на Q чтобы создать поезд");
+                Console.WriteLine("Чтобы вывести информацию обо всех поездах нажмите W");
                 Console.WriteLine("Чтобы выйти нажмите Esc");
                 ConsoleKeyInfo keyInput = Console.ReadKey(true);
 
-                if (keyInput.Key == ConsoleKey.Spacebar)
+                if (keyInput.Key == ConsoleKey.Q)
                 {
-                    station.AddPassengers();
+                    station.CreateTrain();
                 }
                 else if (keyInput.Key == ConsoleKey.Escape)
                 {
                     isWorking = false;
                 }
+                else if (keyInput.Key == ConsoleKey.W)
+                {
+                    station.ShowInfoAboutAboutTrainList();
+                }
             }
-
         }
     }
 
@@ -45,7 +50,22 @@ namespace ConsoleApp9
             _startPoint = Console.ReadLine();
 
             Console.WriteLine("Какая конечная точка?");
-            _finishPoint = Console.ReadLine();
+            string userInput = Console.ReadLine();
+            if (userInput != _startPoint)
+            {
+                _finishPoint = userInput;
+            }
+            
+        }
+
+        public string ReturnStartPoint()
+        {
+            return _startPoint;
+        }
+
+        public string ReturnFinishPoint()
+        {
+            return _finishPoint;
         }
 
         public void ShowDirection()
@@ -56,7 +76,7 @@ namespace ConsoleApp9
 
     class Van
     {
-        private int _maxAccomodation ;
+        private int _maxAccomodation;
 
         public Van(int maxAccomodation)
         {
@@ -71,6 +91,7 @@ namespace ConsoleApp9
 
     class Station
     {
+        private List<Train> _trains = new List<Train>();
         private Direction _direction = new Direction(null, null);
         private int _passengersNumber;
         private int _occupiedVans = 0;
@@ -78,11 +99,11 @@ namespace ConsoleApp9
 
         public void ComplementVan(Van van)
         {
-            _occupiedVans += 1;
+            _occupiedVans++;
             _occupiedPlaces += van.GetLenght();
         }
 
-        public void AddPassengers()
+        public void CreateTrain()
         {
             Random random = new Random();
             _direction.AddDirection();
@@ -91,32 +112,68 @@ namespace ConsoleApp9
 
             while (_occupiedPlaces < _passengersNumber)
             {
-                if (random.Next(0,2) == 0)
+                if (random.Next(0, 2) == 0)
                 {
                     Van van = new Van(50);
                     ComplementVan(van);
                 }
-                else if (random.Next(0,2) == 1)
+                else if (random.Next(0, 2) == 1)
                 {
                     Van van = new Van(75);
                     ComplementVan(van);
                 }
-                else if (random.Next(0,2) == 2)
+                else if (random.Next(0, 3) == 2)
                 {
                     Van van = new Van(100);
                     ComplementVan(van);
                 }
             }
 
-            ShowInfo();
+            Train train = new Train(_occupiedVans, _passengersNumber, _direction.ReturnStartPoint(), _direction.ReturnFinishPoint());
+            _trains.Add(train);
+
+            ShowInfoAboutCreatedTrain();
         }
 
-        public void ShowInfo()
+        public void ShowInfoAboutCreatedTrain()
         {
             Console.WriteLine("Количество вагонов в поезде: " + _occupiedVans);
             Console.WriteLine("Общее количество занятых мест: " + _passengersNumber);
             Console.WriteLine("Направление: ");
             _direction.ShowDirection();
+        }
+
+        public void ShowInfoAboutAboutTrainList()
+        {
+            for (int i = 0; i < _trains.Count; i++)
+            {
+                Console.WriteLine("Рейс номер: " + i + ":");
+                _trains[i].ShowInfo();
+            }
+        }
+    }
+
+    class Train
+    {
+        private int _vansNumber;
+        private int _passengersNumber;
+        private string _startPoint;
+        private string _finishPoint;
+
+        public Train(int vans, int passengersNumber, string startPoint, string FinishPoint)
+        {
+            _vansNumber = vans;
+            _passengersNumber = passengersNumber;
+            _startPoint = startPoint;
+            _finishPoint = FinishPoint;
+        }
+
+        public void ShowInfo()
+        {
+            Console.WriteLine(_vansNumber);
+            Console.WriteLine(_passengersNumber);
+            Console.WriteLine(_startPoint);
+            Console.WriteLine(_finishPoint);
         }
     }
 }

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 namespace ConsoleApp9
 {
@@ -7,6 +6,24 @@ namespace ConsoleApp9
     {
         static void Main(string[] args)
         {
+            Station station = new Station();
+            bool isWorking = true;
+            
+            while (isWorking)
+            {
+                Console.WriteLine("Нажмите на пробел чтобы создать поезд");
+                Console.WriteLine("Чтобы выйти нажмите Esc");
+                ConsoleKeyInfo keyInput = Console.ReadKey(true);
+
+                if (keyInput.Key == ConsoleKey.Spacebar)
+                {
+                    station.AddPassengers();
+                }
+                else if (keyInput.Key == ConsoleKey.Escape)
+                {
+                    isWorking = false;
+                }
+            }
 
         }
     }
@@ -30,35 +47,76 @@ namespace ConsoleApp9
             Console.WriteLine("Какая конечная точка?");
             _finishPoint = Console.ReadLine();
         }
+
+        public void ShowDirection()
+        {
+            Console.WriteLine(_startPoint + " - " + _finishPoint);
+        }
     }
 
     class Van
     {
-        private int _maxAccomodation;
+        private int _maxAccomodation ;
 
         public Van(int maxAccomodation)
         {
             _maxAccomodation = maxAccomodation;
         }
+
+        public int GetLenght()
+        {
+            return _maxAccomodation;
+        }
     }
 
     class Station
     {
-        List<Van> vans = new List<Van>();
-
+        private Direction _direction = new Direction(null, null);
         private int _passengersNumber;
+        private int _occupiedVans = 0;
+        private int _occupiedPlaces = 0;
+
+        public void ComplementVan(Van van)
+        {
+            _occupiedVans += 1;
+            _occupiedPlaces += van.GetLenght();
+        }
 
         public void AddPassengers()
         {
-            int numberOfSeatsInVans = 0;
             Random random = new Random();
+            _direction.AddDirection();
 
             _passengersNumber = random.Next(50, 400);
 
-            while (numberOfSeatsInVans < _passengersNumber)
+            while (_occupiedPlaces < _passengersNumber)
             {
-
+                if (random.Next(0,2) == 0)
+                {
+                    Van van = new Van(50);
+                    ComplementVan(van);
+                }
+                else if (random.Next(0,2) == 1)
+                {
+                    Van van = new Van(75);
+                    ComplementVan(van);
+                }
+                else if (random.Next(0,2) == 2)
+                {
+                    Van van = new Van(100);
+                    ComplementVan(van);
+                }
             }
+
+            ShowInfo();
+        }
+
+        public void ShowInfo()
+        {
+            Console.WriteLine("Количество вагонов в поезде: " + _occupiedVans);
+            Console.WriteLine("Общее количество занятых мест: " + _passengersNumber);
+            Console.WriteLine("Направление: ");
+            _direction.ShowDirection();
         }
     }
 }

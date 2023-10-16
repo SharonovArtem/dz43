@@ -10,25 +10,7 @@ namespace ConsoleApp11
     {
         static void Main(string[] args)
         {
-            List<Warrior> warriors = new List<Warrior>();
-            Knight knight = new Knight("Воин", 100, 25, 10);
-            Berserk berserk = new Berserk("Берсерк", 150, 30, 2);
-            Wizard wizard = new Wizard("Маг", 70, 35, 3);
-            Mechanic mechanic = new Mechanic("Механик", 70, 10, 20);
-            Butcher butcher = new Butcher("Мясник", 400, 7, 0);
-            string userInput;
 
-            warriors.Add(wizard);
-            warriors.Add(mechanic);
-            warriors.Add(berserk);
-            warriors.Add(knight);
-
-            Console.WriteLine("Выбери бойца");
-
-            for (int i = 0; i < warriors.Count - 1; i++)
-            {
-                warriors[i].ShowInfo();
-            }
         }
     }
 
@@ -47,15 +29,19 @@ namespace ConsoleApp11
             Armor = armor;
         }
 
-        public void TakeDamage(int hp, int damage)
+        public void TakeDamage( int damage)
         {
-            hp -= damage - Armor;
-
+            Hp -= damage - Armor;
         }
 
         public int ReturnHp()
         {
             return Hp;
+        }
+
+        public int ReturnDamage()
+        {
+            return Damage;
         }
 
         public void ShowInfo()
@@ -145,10 +131,82 @@ namespace ConsoleApp11
         public void makeBattle(Warrior warrior1, Warrior warrior2)
         {
             Random random = new Random();
+            int randomHeroNumber = random.Next(0, 5);
+            int playerHeroNumber;
+            ConsoleKeyInfo pickActionKey;
+            Knight knight = new Knight("Воин", 100, 25, 10);
+            Berserk berserk = new Berserk("Берсерк", 150, 30, 2);
+            Wizard wizard = new Wizard("Маг", 70, 35, 3);
+            Mechanic mechanic = new Mechanic("Механик", 70, 10, 20);
+            Butcher butcher = new Butcher("Мясник", 400, 7, 0);
+            string userInput;
+
+            if (randomHeroNumber == 0)
+            {
+                warrior2 = knight;
+            }
+            else if(randomHeroNumber == 1)
+            {
+                warrior2 = wizard;
+            }
+            else if (randomHeroNumber == 2)
+            {
+                warrior2 = berserk;
+            }
+            else if (randomHeroNumber == 3)
+            {
+                warrior2 = mechanic;
+            }
+            else if (randomHeroNumber == 4)
+            {
+                warrior2 = butcher;
+            }
+
+            Console.WriteLine("Выбери бойца");
+
+            userInput = Console.ReadLine();
+            playerHeroNumber = Convert.ToInt32(userInput);
+
+            if (playerHeroNumber == 0)
+            {
+                warrior1 = knight;
+                Console.WriteLine("Вы выбрали Воина");
+            }
+            else if (playerHeroNumber == 1)
+            {
+                warrior1= wizard;
+                Console.WriteLine("Вы выбрали Мага");
+            }
+            else if (playerHeroNumber == 2)
+            {
+                warrior1 = berserk;
+                Console.WriteLine("Вы выбрали Берсерка");
+            }
+            else if (playerHeroNumber == 3)
+            {
+                warrior1 = mechanic;
+                Console.WriteLine("Вы выбрали Механика");
+            }
+            else if (playerHeroNumber == 4)
+            {
+                warrior1 = butcher;
+                Console.WriteLine("Вы выбрали мясника");
+            }
 
             while (warrior1.ReturnHp() > 0 || warrior2.ReturnHp() > 0)
             {
+                Console.WriteLine("Выберите действие");
 
+                pickActionKey = Console.ReadKey(true);
+
+                if (pickActionKey.Key == ConsoleKey.Q)
+                {
+                    warrior2.TakeDamage(warrior1.ReturnDamage());
+                }
+                else if (pickActionKey.Key == ConsoleKey.W)
+                {
+                    
+                }
             }
         }
     }
